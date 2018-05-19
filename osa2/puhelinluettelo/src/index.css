@@ -1,5 +1,12 @@
 body {
-  margin: 0;
-  padding: 0;
   font-family: sans-serif;
+}
+
+.success-notification {
+  color: green;
+  background: lightgrey;
+  border-style: solid;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 20px;
 }

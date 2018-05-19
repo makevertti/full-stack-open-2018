@@ -6,7 +6,7 @@ const PersonList = (props) => {
     <table>
       <tbody>
         {props.persons.filter(person => (person.name.toLowerCase().includes(props.filter.toLowerCase()))).map(person => 
-        <Person key={person.name} name={person.name} number={person.number} />)}
+        <Person key={person.name} name={person.name} number={person.number} id={person.id} onClick={props.deleteFunction} />)}
       </tbody>
     </table>
   )
