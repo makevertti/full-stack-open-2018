@@ -1,0 +1,1 @@
+Deployattu sovellus löytyy [täältä](https://puhelinluettelo-tbuypxicet.now.sh/)
