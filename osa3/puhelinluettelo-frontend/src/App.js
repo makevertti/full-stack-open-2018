@@ -81,9 +81,9 @@ class App extends React.Component {
   }
 
   deletePerson(event) {
-    const deletablePersonName = this.state.persons.filter(person => person.id === parseInt(event.target.id, 10))[0].name
+    const deletablePersonName = this.state.persons.filter(person => person.id === event.target.id)[0].name
     if (window.confirm('Poistetaanko ' + deletablePersonName + '?')) {
-      let newPersonArray = this.state.persons.filter(person => person.id !== parseInt(event.target.id, 10))
+      let newPersonArray = this.state.persons.filter(person => person.id !== event.target.id)
       personService
       .remove(event.target.id)
       .then(() => {

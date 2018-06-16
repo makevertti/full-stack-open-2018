@@ -2,6 +2,8 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const morgan = require('morgan')
+const Person = require('./models/person')
+
 const app = express()
 
 app.use(bodyParser.json())
@@ -12,35 +14,36 @@ morgan.token('data', function (req, res) { return JSON.stringify(req.body) })
 app.use(morgan(':method :url :status :data :res[content-length] - :response-time ms'))
 
 
-let persons = [
-  {
-    name: "Testi1",
-    number: "123456789",
-    id: 1
-  },
-  {
-    name: "Testi2",
-    number: "987654321",
-    id: 2
-  }
-]
-
 app.get('/api/persons', (req, res) => {
-  res.json(persons);
+  Person
+  .find({})
+  .then(result => {
+    res.json(result.map(Person.format));
+  })
 })
 
 app.get('/api/persons/:id', (req, res) => {
-  const person = persons.find(person => person.id === Number(req.params.id))
-  if (person) {
-    res.json(person)
-  } else {
-    res.status(404).end()
-  }
+  Person
+  .findById(req.params.id)
+  .then(result => {
+    res.json(Person.format(result))
+  })
+  .catch(err => {
+    console.log(err)
+    res.status(400).send({error: 'invalid id'})
+  })
 })
 
 app.delete('/api/persons/:id', (req, res) => {
-  persons = persons.filter(person => person.id !== Number(req.params.id))
-  res.status(204).end();
+  Person
+    .findByIdAndRemove(req.params.id)
+    .then(result => {
+      res.status(204).end()
+    })
+    .catch(err => {
+      console.log(err)
+      res.status(400).send({ error: 'invalid id' })
+    })
 })
 
 app.post('/api/persons', (req, res) => {
@@ -50,17 +53,48 @@ app.post('/api/persons', (req, res) => {
     return res.status(400).json({error: 'Name and number required'})
   }
 
-  if (persons.find(p => p.name === person.name)) {
-    return res.status(400).json({error: 'Name must be unique'})
+  const dbPerson = new Person({
+    name: person.name,
+    number: person.number
+  })
+
+  dbPerson
+    .save()
+    .then(result => {
+      res.json(Person.format(result))
+    })
+    .catch(err => {
+      console.log(err)
+      res.status(404).end()
+    })
+})
+
+app.put('/api/persons/:id', (req, res) => {
+  const p = req.body
+
+  const person = {
+    name: p.name,
+    number: p.number
   }
 
-  person.id = Math.floor(Math.random() * 1000000)
-  persons = persons.concat(person)
-  res.json(person)
+  Person
+    .findByIdAndUpdate(req.params.id, person, { new: true } )
+    .then(updatedPerson => {
+      res.json(updatedPerson)
+    })
+    .catch(err => {
+      console.log(err)
+      res.status(400).send({ error: 'invalid id' })
+    })
+
 })
 
 app.get('/info', (req, res) => {
-  res.send('<p>Puhelinluettelossa on ' + persons.length + ' henkilön tiedot</p><h3>' + new Date +'</h3>')
+  Person
+  .find({})
+  .then(result => {
+    res.send('<p>Puhelinluettelossa on ' + result.length + ' henkilön tiedot</p><h3>' + new Date +'</h3>')
+  })
 })
 
 const PORT = 3001
