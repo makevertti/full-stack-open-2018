@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
-const fs = require('fs');
+const fs = require('fs')
 
-const dbCredentials = JSON.parse(fs.readFileSync('../../ignore/osa3/db-credentials.json', 'utf8'));
+const dbCredentials = JSON.parse(fs.readFileSync('../../ignore/osa3/db-credentials.json', 'utf8'))
 const url = 'mongodb://' + dbCredentials.username + ':' + dbCredentials.password + '@ds257590.mlab.com:57590/full-stack-open-puhelinluettelo'
 
 mongoose.connect(url)
@@ -16,14 +16,14 @@ const Person = mongoose.model('Person', {
 
 if (name === undefined && number === undefined) {
   Person
-  .find({})
-  .then(result => {
-    console.log('Puhelinluettelo:')
-    result.forEach(person => {
-      console.log(person.name + ' ' + person.number)
+    .find({})
+    .then(result => {
+      console.log('Puhelinluettelo:')
+      result.forEach(person => {
+        console.log(person.name + ' ' + person.number)
+      })
+      mongoose.connection.close()
     })
-    mongoose.connection.close()
-  })
 } else {
   const person = new Person({
     name: name,
@@ -32,7 +32,7 @@ if (name === undefined && number === undefined) {
 
   person
     .save()
-    .then(response => {
+    .then(() => {
       console.log('Lisätään henkilö ' + name + ' numero ' + number + ' luetteloon')
       mongoose.connection.close()
     })

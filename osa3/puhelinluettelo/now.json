@@ -1,0 +1,5 @@
+{
+    "env": {
+      "OSA3_PUHELINLUETTELO_MONGODB_URI": "@osa3_puhelinluettelo_mongodb_uri"
+    }
+  }

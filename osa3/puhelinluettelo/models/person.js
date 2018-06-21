@@ -1,8 +1,10 @@
 const mongoose = require('mongoose')
-const fs = require('fs')
 
-const dbCredentials = JSON.parse(fs.readFileSync('../../ignore/osa3/db-credentials.json', 'utf8'));
-const url = 'mongodb://' + dbCredentials.username + ':' + dbCredentials.password + '@ds257590.mlab.com:57590/full-stack-open-puhelinluettelo'
+if ( process.env.NODE_ENV !== 'production' ) {
+  require('dotenv').config()
+}
+
+const url = process.env.OSA3_PUHELINLUETTELO_MONGODB_URI
 mongoose.connect(url)
 
 const personSchema = new mongoose.Schema({

@@ -1,1 +1,1 @@
-Deployattu sovellus löytyy [täältä](https://puhelinluettelo-tbuypxicet.now.sh/)
+Deployattu sovellus löytyy [täältä](https://puhelinluettelo-wknnoauooi.now.sh/)
