@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const config = require('../utils/config')
 
 const Blog = mongoose.model('Blog', {
   title: String,
@@ -7,11 +8,25 @@ const Blog = mongoose.model('Blog', {
   likes: Number
 })
 
-if (process.env.NODE_ENV !== 'production') {
-  require('dotenv').config()
+mongoose
+.connect(config.mongoUrl)
+.then( () => {
+  console.log('Connected to database')
+})
+.catch( err => {
+  console.log(err)
+})
+
+const closeDBConnection = () => {
+  mongoose.connection.close()
 }
 
-const mongoUrl = process.env.MONGODB_URL
-mongoose.connect(mongoUrl)
+const dropDB = () => {
+  mongoose.connection.dropDatabase()
+}
 
-module.exports = Blog
+module.exports = {
+  Blog,
+  closeDBConnection,
+  dropDB
+}
