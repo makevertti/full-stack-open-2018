@@ -1,0 +1,10 @@
+POST http://localhost:3001/api/blogs
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im5ld1VzZXIiLCJpZCI6IjViM2IzODU5MmQxOWNhMGM2NDYwNzFjYSIsImlhdCI6MTUzMDYyODE0Nn0.oppT2wxvOBTgz2q9Jiv0U1At-yhQVrhZowZNe29k82Y
+
+{
+    "title": "testibloggaus",
+    "author": "testibloggari",
+    "url": "http://127.0.0.1/",
+    "likes": 0
+}
