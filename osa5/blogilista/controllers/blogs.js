@@ -13,7 +13,7 @@ blogsRouter.get('/', async(request, response) => {
 blogsRouter.post('/', async(request, response) => {
   try {
     const body = request.body
-    if (body.title === undefined || body.url === undefined) return response.status(400).json({error: "title and url required"})
+    if (body.title === undefined || body.title === '' || body.url === undefined || body.url === '') return response.status(400).json({error: "title and url required"})
     if (body.likes === undefined) body.likes = 0
 
     const decodedToken = jwt.verify(request.token, process.env.SECRET)
@@ -56,22 +56,14 @@ blogsRouter.delete('/:id', async(request, response) => {
     const blog = await Blog.findById(request.params.id)
     const user = await User.findById(decodedToken.id)
 
-    console.log("=========")
-    console.log("user:")
-    console.log(user._id)
-    console.log("blog.user:")
-    console.log(blog.user._id)
-    console.log("id !== blog.user._id?")
-    console.log(user._id.toString() !== blog.user._id.toString())
-    console.log("=========")
-
-    if (user._id.toString() !== blog.user._id.toString()) {
+    if (blog.user !== undefined && blog.user !== null && user._id.toString() !== blog.user._id.toString()) {
       return response.status(401).json({ error: 'you can remove only blogs that you have created' })
     }
 
     await Blog.findByIdAndRemove(request.params.id)
     await response.status(204).end()
   } catch (err) {
+    console.log(err)
     response.status(400).json({error: "failed to remove blog (invalid id)"})
   }
 })
