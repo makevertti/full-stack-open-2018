@@ -1,7 +1,16 @@
 import React from 'react'
 import Notification from './Notification'
+import PropTypes from 'prop-types'
 
 class NewBlogForm extends React.Component {
+  static propTypes = {
+    title: PropTypes.string.isRequired,
+    author: PropTypes.string.isRequired,
+    url: PropTypes.string.isRequired,
+    createBlog: PropTypes.func.isRequired,
+    handleFieldChange: PropTypes.func.isRequired,
+    success: PropTypes.string
+  }
   constructor(props) {
     super(props)
     this.state = {
